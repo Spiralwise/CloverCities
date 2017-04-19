@@ -169,6 +169,7 @@ MonoBehaviour:
   maxBuildingWidth: 5
   maxStack: 3
   stackVariation: 0.5
+  heightGrowth: 0.5
 --- !u!1 &383327013
 GameObject:
   m_ObjectHideFlags: 0
