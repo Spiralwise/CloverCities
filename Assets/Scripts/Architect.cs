@@ -1,25 +1,15 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class BuildingGenerator : MonoBehaviour {
-
-	public Material defaultMaterial;
-	public float minBuildingHeight = 1.0f, maxBuildingHeight = 2.0f;
-	public float minBuildingWidth = 1.0f, maxBuildingWidth = 2.0f;
-	public int maxStack = 3;
-	[Range(0f, 1f)]
-	public float stackVariation = 0.5f;
-	public float heightGrowth = 0.8f;
+public class Architect {
 
 	const int faces = 5; // Do not do bottom face
 	const int ring = 8;
 	const int top = 16;
 	const int verticesByStack = faces * 4;
 
-	enum StackMode {
-		OnTop,
-		Neighbor
-	}
+	float heightGrowth;
+	BuildingStyle buildingStyle;
 
 	enum Corner {
 		NorthWest,
@@ -28,24 +18,27 @@ public class BuildingGenerator : MonoBehaviour {
 		SouthWest
 	}
 
-	public float RandomVariation () {
-		return Random.Range (0f, stackVariation);
+	public float RandomVariation {
+		get {
+			return Mathf.Pow (Random.Range (0f, 1f), 3);
+		}
 	}
 
-	public GameObject CreateBuilding() {
-		GameObject building = new GameObject ("Building");
+	public Building CreateBuilding(Blueprint blueprint) {
+		GameObject building = new GameObject ("Building"); // TODO Give name that can even be displayed in game
 		Mesh mesh = building.AddComponent<MeshFilter> ().mesh;
 		MeshRenderer renderer = building.AddComponent<MeshRenderer> ();
 
-		Vector3 randomSize = new Vector3(
-			Random.Range (minBuildingWidth, maxBuildingWidth),
-			Random.Range (minBuildingHeight, maxBuildingHeight),
-			Random.Range (minBuildingWidth, maxBuildingWidth)
-		);
-		CreateMesh (ref mesh, randomSize, maxStack);
-		renderer.material = defaultMaterial;
+		this.heightGrowth = blueprint.heightGrowth;
+		this.buildingStyle = blueprint.buildingStyle;
+		Vector3 dimension = new Vector3 (
+			                    Random.Range (blueprint.minBuildingWidth, blueprint.maxBuildingWidth),
+			                    Random.Range (blueprint.minBuildingHeight, blueprint.maxBuildingHeight),
+								Random.Range (blueprint.minBuildingWidth, blueprint.maxBuildingWidth));
+		CreateMesh (ref mesh, dimension, Random.Range (1, blueprint.maxStack + 1));
+		renderer.material = blueprint.defaultMaterial;
 
-		return building;
+		return new Building (dimension, building);
 	}
 
 	int SetQuad(int [] triangles, int i, int v00, int v10, int v01, int v11) {
@@ -60,8 +53,14 @@ public class BuildingGenerator : MonoBehaviour {
 		Vector3[] vertices = new Vector3[verticesByStack * stack];
 		int[] triangles = new int[faces * 6 * stack];
 
-		//CreateAsOnTop (vertices, triangles, size, stack);
-		CreateAsCorner (vertices, triangles, size, stack);
+		switch (buildingStyle) {
+		case BuildingStyle.Corner:
+			CreateAsCorner (vertices, triangles, size, stack);
+			break;
+		case BuildingStyle.Stack:
+			CreateAsOnTop (vertices, triangles, size, stack);
+			break;
+		}
 
 		mesh.vertices = vertices;
 		mesh.triangles = triangles;
@@ -98,13 +97,13 @@ public class BuildingGenerator : MonoBehaviour {
 			x = top + offsetV;
 			v = SetQuad (triangles, v, x, x + 1, x + 3, x + 2);
 
-			if (s < stack-1) {
+			if (s < stack-1) { // TODO Put it at the beginning
 				currentHeight += nextHeight;
 				nextHeight *= Random.Range (heightGrowth, 1f);
-				surface.xMin += RandomVariation ();
-				surface.xMax -= RandomVariation ();
-				surface.yMin += RandomVariation ();
-				surface.yMax -= RandomVariation ();
+				surface.xMin += RandomVariation;
+				surface.xMax -= RandomVariation;
+				surface.yMin += RandomVariation;
+				surface.yMax -= RandomVariation;
 			}
 		}
 	}
@@ -112,26 +111,25 @@ public class BuildingGenerator : MonoBehaviour {
 	/* Create a building mesh that place stacks on the corners.
 	 */
 	void CreateAsCorner(Vector3[] vertices, int[] triangles, Vector3 size, int stack) {
-		Vector3 halfSize = size / 2f;
 		Corner corner = (Corner)Random.Range (0, 4);
 
 		int v = 0;
-		for (int s = 0; s < stack; s++) { // TODO Redundancy with CreateAsOnTop(...), make a function
+		for (int s = 0; s < stack; s++) {
 			Rect surface = new Rect();
 			Vector3 dimension = new Vector3 (
-				                    size.x * (1f + RandomVariation ()) / 2, 
+				                    size.x * (1f + RandomVariation) / 2, 
 									Mathf.Pow ((float)(s + 1) / (stack + 1), heightGrowth) * size.y,
-				                    size.z * (1f + RandomVariation ()) / 2);
+				                    size.z * (1f + RandomVariation) / 2);
 			if (corner == Corner.NorthWest)
-				surface = new Rect (-halfSize.x, halfSize.z, dimension.x, dimension.z);
+				surface = new Rect (0f, size.z - dimension.z, dimension.x, dimension.z);
 			else if (corner == Corner.NorthEast)
-				surface = new Rect (halfSize.x - dimension.x, halfSize.z, dimension.x, dimension.z);
+				surface = new Rect (size.x - dimension.x, size.z - dimension.z, dimension.x, dimension.z);
 			else if (corner == Corner.SouthEast)
-				surface = new Rect (halfSize.x - dimension.x, dimension.z - halfSize.z, dimension.x, dimension.z);
+				surface = new Rect (size.x - dimension.x, 0f, dimension.x, dimension.z);
 			else if (corner == Corner.SouthWest)
-				surface = new Rect (-halfSize.x, dimension.z - halfSize.z, dimension.x, dimension.z);
+				surface = new Rect (0f, 0f, dimension.x, dimension.z);
 
-			int currentV;
+			int currentV; // TODO Redundancy with CreateAsOnTop(...), make a function
 			int offsetV = s * verticesByStack;
 			for (int t = 0; t < 2; t++) {
 				int onTop = t % 2;

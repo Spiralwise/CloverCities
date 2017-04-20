@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(BuildingGenerator))]
+[RequireComponent(typeof(DistrictManager))]
 public class CityGenerator : MonoBehaviour {
 
 	public int mapWidth = 100, mapHeight = 100;
@@ -16,10 +16,10 @@ public class CityGenerator : MonoBehaviour {
 	}
 
 	public void GenerateCity() {
-		BuildingGenerator buildingGenerator = GetComponent<BuildingGenerator> ();
-		GameObject building = buildingGenerator.CreateBuilding ();
-		building.transform.position = Vector3.zero;
-		building.transform.SetParent (transform);
+		DistrictManager districtGenerator = GetComponent<DistrictManager> ();
+		GameObject district = districtGenerator.CreateDistrict ();
+		district.transform.position = Vector3.zero;
+		district.transform.SetParent (transform);
 	}
 
 	void Reset () {

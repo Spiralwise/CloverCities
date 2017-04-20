@@ -159,17 +159,25 @@ MonoBehaviour:
   m_GameObject: {fileID: 245260859}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3f83a7392735ff74387739f9f8bc1b9f, type: 3}
+  m_Script: {fileID: 11500000, guid: 76119e939aa644a4a861c3ddc32070c2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-  minBuildingHeight: 1
-  maxBuildingHeight: 10
-  minBuildingWidth: 1
-  maxBuildingWidth: 5
-  maxStack: 3
-  stackVariation: 0.5
-  heightGrowth: 0.5
+  margin: 0.5
+  area:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 10
+    height: 10
+  blueprint:
+    defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+    minBuildingHeight: 1
+    maxBuildingHeight: 5
+    minBuildingWidth: 2
+    maxBuildingWidth: 4
+    maxStack: 3
+    heightGrowth: 0.8
+    buildingStyle: 1
 --- !u!1 &383327013
 GameObject:
   m_ObjectHideFlags: 0
