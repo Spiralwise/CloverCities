@@ -6,6 +6,7 @@ public class CameraManager : MonoBehaviour {
 
 	public Transform target;
 	public float sensivity;
+	public float scrollSensivity;
 
 	void Start () {
 		transform.LookAt (target);
@@ -14,7 +15,7 @@ public class CameraManager : MonoBehaviour {
 	void Update () {
 		if (Input.GetMouseButton(0)) {
 			transform.RotateAround (target.position, Vector3.up, Input.GetAxis ("Mouse X") * sensivity * 2 * Time.deltaTime);
-			transform.Translate (transform.worldToLocalMatrix * transform.up * -1f * Input.GetAxis ("Mouse Y") * sensivity / 2 * Time.deltaTime);
+			transform.Translate (transform.worldToLocalMatrix * transform.up * -1f * Input.GetAxis ("Mouse Y") * sensivity * Time.deltaTime);
 			transform.LookAt (target);
 		}
 		if (Input.GetMouseButton(1)) {
@@ -23,6 +24,6 @@ public class CameraManager : MonoBehaviour {
 			target.transform.position += speed;
 			transform.LookAt (target);
 		}
-		transform.Translate (transform.worldToLocalMatrix * transform.forward * 2 * Input.GetAxis("Mouse ScrollWheel") * sensivity * Time.deltaTime);
+		transform.Translate (transform.worldToLocalMatrix * transform.forward * Input.GetAxis("Mouse ScrollWheel") * scrollSensivity * 10 * Time.deltaTime);
 	}
 }

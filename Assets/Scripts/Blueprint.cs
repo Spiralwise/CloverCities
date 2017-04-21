@@ -9,7 +9,7 @@ public enum BuildingStyle {
 }
 
 [System.Serializable]
-public class Blueprint {
+public class Blueprint { // TODO Blueprint factory?
 
 	public Material defaultMaterial;
 	public float minBuildingHeight = 1.0f, maxBuildingHeight = 2.0f;

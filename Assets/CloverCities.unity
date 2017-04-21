@@ -117,7 +117,6 @@ GameObject:
   m_Component:
   - component: {fileID: 245260861}
   - component: {fileID: 245260860}
-  - component: {fileID: 245260862}
   m_Layer: 0
   m_Name: CityManager
   m_TagString: Untagged
@@ -136,48 +135,91 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2e3af04dd640a5c48abebe559fd4e896, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mapWidth: 100
-  mapHeight: 100
+  cityRadius: 100
+  center:
+    name: Center
+    margin: 1
+    area:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 20
+      height: 20
+    blueprint:
+      defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+      minBuildingHeight: 1
+      maxBuildingHeight: 2
+      minBuildingWidth: 20
+      maxBuildingWidth: 30
+      maxStack: 5
+      heightGrowth: 0.8
+      buildingStyle: 0
+  districtLayers:
+  - name: Business
+    margin: 1
+    area:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 15
+      height: 15
+    blueprint:
+      defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+      minBuildingHeight: 30
+      maxBuildingHeight: 50
+      minBuildingWidth: 4
+      maxBuildingWidth: 5
+      maxStack: 5
+      heightGrowth: 0.8
+      buildingStyle: 1
+  - name: Residential
+    margin: 2
+    area:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 30
+      height: 30
+    blueprint:
+      defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+      minBuildingHeight: 5
+      maxBuildingHeight: 15
+      minBuildingWidth: 5
+      maxBuildingWidth: 8
+      maxStack: 4
+      heightGrowth: 0.8
+      buildingStyle: 0
+  - name: Industrial
+    margin: 2
+    area:
+      serializedVersion: 2
+      x: 0
+      y: 0
+      width: 40
+      height: 40
+    blueprint:
+      defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
+      minBuildingHeight: 1
+      maxBuildingHeight: 5
+      minBuildingWidth: 4
+      maxBuildingWidth: 10
+      maxStack: 3
+      heightGrowth: 0.8
+      buildingStyle: 1
 --- !u!4 &245260861
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 245260859}
-  m_LocalRotation: {x: 0.40821788, y: -0.23456968, z: 0.10938163, w: 0.8754261}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
+  m_Children:
+  - {fileID: 443542249}
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &245260862
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 245260859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76119e939aa644a4a861c3ddc32070c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  margin: 0.5
-  area:
-    serializedVersion: 2
-    x: 0
-    y: 0
-    width: 10
-    height: 10
-  blueprint:
-    defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-    minBuildingHeight: 1
-    maxBuildingHeight: 5
-    minBuildingWidth: 2
-    maxBuildingWidth: 4
-    maxStack: 3
-    heightGrowth: 0.8
-    buildingStyle: 1
 --- !u!1 &383327013
 GameObject:
   m_ObjectHideFlags: 0
@@ -243,6 +285,90 @@ Light:
   m_UseColorTemperature: 0
   m_ShadowRadius: 0
   m_ShadowAngle: 0
+--- !u!1 &443542248
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 443542249}
+  - component: {fileID: 443542252}
+  - component: {fileID: 443542251}
+  - component: {fileID: 443542250}
+  m_Layer: 0
+  m_Name: Plane
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &443542249
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 443542248}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 100, y: 1, z: 100}
+  m_Children: []
+  m_Father: {fileID: 245260861}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!23 &443542250
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 443542248}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_Materials:
+  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+--- !u!64 &443542251
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 443542248}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Convex: 0
+  m_InflateMesh: 0
+  m_SkinWidth: 0.01
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!33 &443542252
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 443542248}
+  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1019391021
 GameObject:
   m_ObjectHideFlags: 0
@@ -346,6 +472,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   target: {fileID: 1800609347}
   sensivity: 300
+  scrollSensivity: 100
 --- !u!1 &1800609346
 GameObject:
   m_ObjectHideFlags: 0

@@ -2,8 +2,10 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DistrictManager : MonoBehaviour {
+[System.Serializable]
+public class DistrictLayer {
 
+	public string name;
 	public float margin;
 	public Rect area;
 	public Blueprint blueprint;
@@ -12,7 +14,7 @@ public class DistrictManager : MonoBehaviour {
 
 	public GameObject CreateDistrict () {
 		buildings = new List<Building> ();
-		GameObject district = new GameObject ("District"); // TODO Give name
+		GameObject district = new GameObject (name);
 
 		Architect architect = new Architect ();
 		Rect workingArea = new Rect (margin, margin, area.width - margin * 2, area.height - margin * 2);
@@ -39,7 +41,7 @@ public class DistrictManager : MonoBehaviour {
 		return district;
 	}
 
-	void OnDrawGizmos () {
+	/*void OnDrawGizmos () {
 		Gizmos.color = Color.blue;
 		if (buildings != null) {
 			foreach (Building building in buildings) {
@@ -55,5 +57,5 @@ public class DistrictManager : MonoBehaviour {
 		}
 		Gizmos.color = Color.yellow;
 		Gizmos.DrawWireCube (new Vector3(area.center.x, 0f, area.center.y), new Vector3(area.width, 0f, area.height));
-	}
+	}*/
 }
