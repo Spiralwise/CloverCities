@@ -17,25 +17,31 @@ public class DistrictLayer {
 		GameObject district = new GameObject (name);
 
 		Architect architect = new Architect ();
-		Rect workingArea = new Rect (margin, margin, area.width - margin * 2, area.height - margin * 2);
-		Vector2 endArea = new Vector2 (
-			                  workingArea.x + workingArea.width - margin - blueprint.minBuildingWidth,
-			                  workingArea.y + workingArea.height - margin - blueprint.minBuildingWidth);
-		while (workingArea.y < endArea.y) {
-			float nextY = workingArea.y;
-			while (workingArea.x < endArea.x) {
-				Building building = architect.CreateBuilding (blueprint);
-				building.AttachToDistrict (district.transform);
-				building.localPosition = workingArea.position;
-				buildings.Add (building);
+		if (blueprint.buildingStyle == BuildingStyle.Landmark) {
+			Building landmark = architect.CreateBuilding (blueprint);
+			landmark.AttachToDistrict (district.transform);
+			buildings.Add (landmark);
+		} else {
+			Rect workingArea = new Rect (margin, margin, area.width - margin * 2, area.height - margin * 2);
+			Vector2 endArea = new Vector2 (
+				                  workingArea.x + workingArea.width - margin - blueprint.minBuildingWidth,
+				                  workingArea.y + workingArea.height - margin - blueprint.minBuildingWidth);
+			while (workingArea.y < endArea.y) {
+				float nextY = workingArea.y;
+				while (workingArea.x < endArea.x) {
+					Building building = architect.CreateBuilding (blueprint);
+					building.AttachToDistrict (district.transform);
+					building.localPosition = workingArea.position;
+					buildings.Add (building);
 
-				workingArea.xMin += building.dimension.x + margin;
-				float estimatedNextY = workingArea.y + building.dimension.z + margin;
-				if (estimatedNextY > nextY)
-					nextY = estimatedNextY;
+					workingArea.xMin += building.dimension.x + margin;
+					float estimatedNextY = workingArea.y + building.dimension.z + margin;
+					if (estimatedNextY > nextY)
+						nextY = estimatedNextY;
+				}
+				workingArea.xMin = margin;
+				workingArea.yMin = nextY;
 			}
-			workingArea.xMin = margin;
-			workingArea.yMin = nextY;
 		}
 
 		return district;

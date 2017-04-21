@@ -19,6 +19,7 @@ public class CityGenerator : MonoBehaviour {
 	public void GenerateCity() {
 		GameObject c = center.CreateDistrict ();
 		c.transform.SetParent (transform);
+		c.transform.localPosition = new Vector3 (-center.area.width / 2f, 0f, -center.area.height / 2f);
 
 		float minimalDistance = Mathf.Sqrt (center.area.width * center.area.width + center.area.height * center.area.height) / 2;
 		foreach (DistrictLayer district in districtLayers) {

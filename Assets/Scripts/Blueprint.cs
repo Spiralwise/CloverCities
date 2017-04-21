@@ -5,7 +5,8 @@ using UnityEngine;
 [System.Serializable]
 public enum BuildingStyle {
 	Stack,
-	Corner
+	Corner,
+	Landmark
 }
 
 [System.Serializable]

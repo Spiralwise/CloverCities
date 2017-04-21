@@ -60,6 +60,9 @@ public class Architect {
 		case BuildingStyle.Stack:
 			CreateAsOnTop (vertices, triangles, size, stack);
 			break;
+		case BuildingStyle.Landmark:
+			CreateLandmark (vertices, triangles, size, stack);
+			break;
 		}
 
 		mesh.vertices = vertices;
@@ -81,6 +84,43 @@ public class Architect {
 		for (int i = 0; i < 4; i++)
 			vertices [top + i + offsetV] = vertices [ring + i * 2 + offsetV];
 
+		int x;
+		for (x = offsetV; x < 6 + offsetV; x+=2)
+			v = SetQuad (triangles, v, x, x + 1, x + ring, x + ring + 1);
+		x = 6 + offsetV;
+		v = SetQuad (triangles, v, x, x + 1, x + 8, x + 9);
+		x = top + offsetV;
+		v = SetQuad (triangles, v, x, x + 1, x + 3, x + 2);
+
+		return v;
+	}
+
+	int DrawTrapezoidStack(int v, int stackID, Vector3[] vertices, int[] triangles, Rect surface, Vector3 roof, float verticalOffset = 0f) {
+		int currentV;
+		int offsetV = stackID * verticesByStack;
+		for (int t = 0; t < 2; t++) {
+			int onTop = t % 2;
+			currentV = ring * t + offsetV;
+			vertices [currentV] = vertices [currentV + 7] = new Vector3 (
+				surface.x + onTop * roof.x / 2f,
+				onTop * roof.y + verticalOffset,
+				surface.y + onTop * roof.y / 2f);
+			vertices [currentV + 1] = vertices [currentV + 2] = new Vector3 (
+				surface.xMax - onTop * roof.x / 2f, 
+				onTop * roof.y + verticalOffset, 
+				surface.y + onTop * roof.y / 2f);
+			vertices [currentV + 3] = vertices [currentV + 4] = new Vector3 (
+				surface.xMax - onTop * roof.x / 2f, 
+				onTop * roof.y + verticalOffset, 
+				surface.yMax - onTop * roof.y / 2f);
+			vertices [currentV + 5] = vertices [currentV + 6] = new Vector3 (
+				surface.x + onTop * roof.x / 2f, 
+				onTop * roof.y + verticalOffset, 
+				surface.yMax - onTop * roof.y / 2f);
+		}
+		for (int i = 0; i < 4; i++)
+			vertices [top + i + offsetV] = vertices [ring + i * 2 + offsetV];
+		
 		int x;
 		for (x = offsetV; x < 6 + offsetV; x+=2)
 			v = SetQuad (triangles, v, x, x + 1, x + ring, x + ring + 1);
@@ -140,6 +180,25 @@ public class Architect {
 			v = DrawStack (v, s, vertices, triangles, surface, dimension.y);
 
 			corner = (corner == (Corner)3) ? 0 : corner + 1;
+		}
+	}
+
+	void CreateLandmark (Vector3[] vertices, int[] triangles, Vector3 size, int stack) {
+		float verticalOffset = 0f;
+		Rect surface = new Rect(0f, 0f, size.x, size.z);
+
+		int v = 0;
+		for (int s = 0; s < stack; s++) {
+			surface.size = surface.size * Mathf.Pow (RandomVariation, 0.2f);
+			Vector3 dimension = new Vector3 (
+				                    surface.width * (1f + RandomVariation) / 2, 
+				                    Mathf.Pow ((float)(stack - s) / stack, heightGrowth) * size.y,
+				                    surface.height * (1f + RandomVariation) / 2);
+
+			Debug.Log ("surface= " + surface + ", dim= " + dimension);
+			v = DrawTrapezoidStack (v, s, vertices, triangles, surface, dimension, verticalOffset);
+
+			verticalOffset += dimension.y - verticalOffset;
 		}
 	}
 }

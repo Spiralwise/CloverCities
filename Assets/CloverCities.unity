@@ -147,13 +147,13 @@ MonoBehaviour:
       height: 20
     blueprint:
       defaultMaterial: {fileID: 10302, guid: 0000000000000000f000000000000000, type: 0}
-      minBuildingHeight: 1
-      maxBuildingHeight: 2
+      minBuildingHeight: 10
+      maxBuildingHeight: 10
       minBuildingWidth: 20
-      maxBuildingWidth: 30
+      maxBuildingWidth: 20
       maxStack: 5
       heightGrowth: 0.8
-      buildingStyle: 0
+      buildingStyle: 2
   districtLayers:
   - name: Business
     margin: 1
@@ -297,7 +297,7 @@ GameObject:
   - component: {fileID: 443542251}
   - component: {fileID: 443542250}
   m_Layer: 0
-  m_Name: Plane
+  m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
